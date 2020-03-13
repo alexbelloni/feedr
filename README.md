@@ -1,7 +1,9 @@
 # Feedr, a feed reader
 
-Feedr is a feed reader, which shows headlines of articles from news sources on a ordered list.
-JavaScript and JQuery
+Feedr is a feed reader, which shows headlines of articles from news sources on a ordered list.  
+JavaScript and JQuery  
+
+Demo: [Feedr](feedreader.netlify.com)
 
 ## Project's Technical Requirements
 
@@ -50,12 +52,12 @@ JavaScript and JQuery
 
 
 ## Technical hurdles and new knowledge
-### hurdles
-Finding feeds in Json  
-CORS issues
-### new things 
-review JavaScript modules
-rss to json online converter
+### Hurdles
+It's hard finding news feeds in Json format  
+Some news sources blocked me because of CORS issue 
+### New things 
+Review how to use JavaScript modules
+Added a rss-to-json online converter to receive some feeds
 
 
 ## References
