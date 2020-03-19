@@ -75,12 +75,11 @@ function createNasaFeedArray(callback) {
 }
 
 export function getJson(callback) {
-    // createLaravelNewsFeedArray((f3, e3, error3) => {
-    //     const feeds = e3;
-    //     feeds.sort((a, b) => (a.date < b.date) ? 1 : -1);
-    //     callback(feeds, [f3], [ error3]);
+    // import("./articles_test.js").then(module => {
+    //     const feeds = module.default();
+    //     callback(feeds, ["source1", "source2", "source3"], []);
     // })
-    // return
+
     createLaravelNewsFeedArray((f1, e1, error1) => {
         createRedditFeedArray((f2, e2, error2) => {
             createNasaFeedArray((f3, e3, error3) => {

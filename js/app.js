@@ -11,9 +11,11 @@ function drawArticles(ArticleUI, feedsJson) {
     document.querySelector("#main").innerHTML = feedsJson.map((a, i) => ArticleUI.toHtml(a, i)).join("");
     document.querySelectorAll(".article").forEach(a => a.addEventListener("click", () => {
         const index = parseInt(a.getAttribute("index"));
-        document.querySelector("#popUp h1").innerText = feedsJson[index].title;
-        document.querySelector("#popUp p").innerText = feedsJson[index].text || feedsJson[index].url;
-        document.querySelector(".popUpAction").setAttribute("href", feedsJson[index].url);
+        const feedJson = feedsJson[index];
+        document.querySelector("#popUp h1").innerText = feedJson.title;
+        document.querySelector("#popUp p").innerText = feedJson.text || feedJson.url;
+        document.querySelector(".popUpAction").setAttribute("href", feedJson.url);
+        document.querySelector(".closePopUp").setAttribute("href",`#art${parseInt(index)-1}`);
         updatePopUp(false, false);
     }));
 }
