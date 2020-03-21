@@ -3,7 +3,9 @@
 Feedr is a feed reader, which shows headlines of articles from news sources on a ordered list.  
 JavaScript and JQuery  
 
-Demo: [Feedr](https://feedreader.netlify.com)
+[Site](https://feedreader.netlify.com)
+
+Project description: build a simple, single-page application that consumes data from an open, third-party API
 
 ## Project's Technical Requirements
 
