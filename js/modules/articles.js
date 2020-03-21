@@ -1,4 +1,4 @@
-function getFeed(url, loadEvent) {
+function getResponse(url, loadEvent) {
     const obj = new XMLHttpRequest();
     obj.addEventListener('load', loadEvent)
     obj.addEventListener('error', loadEvent)
@@ -14,7 +14,7 @@ function createFeedArray(feedname, url, withCors, onlineConverter, getChildrenSt
         return r;
     }
     const _url = onlineConverter ? `https://api.rss2json.com/v1/api.json?rss_url=${url}` : url;
-    getFeed(withCors ? `https://cors-anywhere.herokuapp.com/${_url}` : _url, event => {
+    getResponse(withCors ? `https://cors-anywhere.herokuapp.com/${_url}` : _url, event => {
         const success = event && event.target.status === 200;
         const jsonObj = success ? toJson(event.target.response) : [];
         callback(feedname, jsonObj, !success && { feedname, status: event.target.status, error: event.target.statusText || "unknowned" });
@@ -74,7 +74,24 @@ function createNasaFeedArray(callback) {
     }, callback);
 }
 
-export function getJson(callback) {
+function createGeneralFeedArray(callback) {
+    const feedname = "General";
+    createFeedArray(feedname, "http://newsapi.org/v2/top-headlines?country=us&apiKey=555047ed3389431f827521b5df180ac1",
+        false, false, response => response.articles, a => {
+            return {
+                feedname,
+                title: a.title,
+                impressions: 0,
+                image: (a.urlToImage) || IMAGE_DEFAULT,
+                url: a.url,
+                category: a.source.name,
+                date: new Date(a.publishedAt),
+                text: a.description
+            }
+        }, callback);
+}
+
+function getJson(callback) {
     // import("./articles_test.js").then(module => {
     //     const feeds = module.default();
     //     callback(feeds, ["source1", "source2", "source3"], []);
@@ -83,10 +100,14 @@ export function getJson(callback) {
     createLaravelNewsFeedArray((f1, e1, error1) => {
         createRedditFeedArray((f2, e2, error2) => {
             createNasaFeedArray((f3, e3, error3) => {
-                const feeds = e1.concat(e2, e3);
-                feeds.sort((a, b) => (a.date < b.date) ? 1 : -1);
-                callback(feeds, [f1, f2, f3], [error1, error2, error3]);
+                createGeneralFeedArray((f4, e4, error4) => {
+                    const feeds = e1.concat(e2, e3, e4);
+                    feeds.sort((a, b) => (a.date < b.date) ? 1 : -1);
+                    callback(feeds, [f1, f2, f3, f4], [error1, error2, error3, error4]);
+                })
             })
         })
     })
 }
+
+export { getResponse, getJson }

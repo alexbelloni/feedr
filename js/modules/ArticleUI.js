@@ -16,9 +16,6 @@ export function toHtml(article, index) {
         <div><span class="name">${article.feedname}</span><span class="category">${article.category || "category"}</span></div>
         <span class="date">${`${formattedNumber(article.date.getDate())}-${formattedNumber(article.date.getMonth()+1)}-${article.date.getFullYear()}`}</span>
       </section>
-      <section class="impressions">
-      ${article.impressions || "0"}
-      </section>
       <div class="clearfix"></div>
     </article>
     </a>

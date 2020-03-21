@@ -224,7 +224,7 @@ nav ul ul li {
 }
 
 .article .articleContent {
-  width: 70%;
+  width: 80%;
   float: left;
   display: flex;
   flex-direction: column;
@@ -261,11 +261,3 @@ nav ul ul li {
   color: #666;
 }
 
-.article .impressions {
-  width: 15%;
-  float: right;
-  font-size: 35px;
-  margin-top: 15px;
-  text-align: right;
-  color: var(--secondary);
-}

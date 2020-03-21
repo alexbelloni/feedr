@@ -5,7 +5,8 @@ JavaScript and JQuery
 
 [Site](https://feedreader.netlify.com)
 
-Project description: build a simple, single-page application that consumes data from an open, third-party API
+Project description: build a simple, single-page application that consumes data from an open, third-party API  
+-> SPA consuming feeds and a news API
 
 ## Project's Technical Requirements
 
@@ -64,6 +65,8 @@ Added a rss-to-json online converter to receive some feeds
 
 ## References
 
+NewsAPI: http://newsapi.org  
+Feeds: nasa.gov laravel-news.com reddit.com  
 Netlify: https://netlify.com  
 Alex's website: https://alexandrebelloni.com  
 

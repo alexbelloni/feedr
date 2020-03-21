@@ -20,14 +20,13 @@ function drawArticles(ArticleUI, feedsJson) {
     }));
 }
 
-
 function getFriendlyFeeds(feedsJson) {
     return feedsJson.filter(a => a.title.toLowerCase().indexOf("ck you") === -1);
 }
 
 window.addEventListener('load', () => {
     updatePopUp(true, false);
-    import('./modules/articles.js').then((articles) => {
+    import('./modules/articles.js').then((articles) => {        
         articles.getJson((feedsJson, feednames, errors) => {
             document.querySelector("#error").innerText = errors.filter(e => e).map(e => `${e.feedname}: ${e.error} (${e.status})`);
             _feedsJson = getFriendlyFeeds(feedsJson);
