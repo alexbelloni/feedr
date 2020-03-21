@@ -1,5 +1,7 @@
 # Feedr, a feed reader
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/3523925d-f136-4cdf-b7ce-4fdc41117747/deploy-status)](https://app.netlify.com/sites/feedreader/deploys)  
+
 Feedr is a feed reader, which shows headlines of articles from news sources on a ordered list.  
 JavaScript and JQuery  
 
