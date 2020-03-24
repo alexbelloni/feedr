@@ -13,7 +13,7 @@ export function toHtml(article, index) {
       </section>
       <section class="articleContent">
         <span class="title">${article.title || "title"}</span>
-        <div><span class="name">${article.feedname}</span><span class="category">${article.category || "category"}</span></div>
+        <div><span class="name">${article.feedname}</span> <img src="${article.icon}"/> <span class="category">${article.category || "category"}</span></div>
         <span class="date">${`${formattedNumber(article.date.getDate())}-${formattedNumber(article.date.getMonth()+1)}-${article.date.getFullYear()}`}</span>
       </section>
       <div class="clearfix"></div>

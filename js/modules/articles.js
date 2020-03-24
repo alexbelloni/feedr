@@ -7,9 +7,23 @@ function getResponse(url, loadEvent) {
 }
 
 function createFeedArray(feedname, url, withCors, onlineConverter, getChildrenStructure, itemToArticleJson, callback) {
+    function getDomain(url){
+        console.log(url)
+        let _url = url
+        const doubleDashIndex = url.indexOf("//")
+        if(doubleDashIndex >= 0){
+            _url = url.substring(doubleDashIndex+2);
+        }
+        const simpleDashIndex = _url.indexOf("/")
+        if(simpleDashIndex >= 0){
+            _url = _url.substring(0, simpleDashIndex);
+        }
+        return _url;
+    }
     function toJson(response) {
         const r = getChildrenStructure(JSON.parse(response)).map(a => {
-            return itemToArticleJson(a);
+            const article = itemToArticleJson(a);
+            return {...article, icon: `http://s2.googleusercontent.com/s2/favicons?domain=${getDomain(article.icon || article.url)}`, }
         })
         return r;
     }
@@ -37,7 +51,8 @@ function createRedditFeedArray(callback) {
             url: a.data.url,
             category: a.data.subreddit || (a.data.is_video && "video") || "uncategorized",
             date: new Date(parseInt(a.data.created_utc) * 1000),
-            text: a.data.link_flair_text
+            text: a.data.link_flair_text,
+            icon: a.data.url.indexOf("redd.it")>=0 ? "reddit.com" : a.data.url
         }
     }, callback);
 }
