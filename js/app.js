@@ -7,8 +7,18 @@ function updatePopUp(loader, hidden) {
 
 document.querySelector(".closePopUp").addEventListener("click", () => updatePopUp(true, true));
 
+function updateMessenger(message) {
+    document.querySelector("#messenger-banner").innerText = message;
+    document.querySelector(".messenger").setAttribute("class", !message ? "messenger close" : "messenger");
+    document.querySelector(".main").setAttribute("class", !message ? "main container headerless" : "main container");
+}
+
+document.querySelector("#messenger-x").addEventListener("click", () => {
+    updateMessenger();
+});
+
 function drawArticles(ArticleUI, feedsJson) {
-    document.querySelector("#main").innerHTML = feedsJson.map((a, i) => ArticleUI.toHtml(a, i)).join("");
+    document.querySelector(".main").innerHTML = feedsJson.map((a, i) => ArticleUI.toHtml(a, i)).join("");
     document.querySelectorAll(".article").forEach(a => a.addEventListener("click", () => {
         const index = parseInt(a.getAttribute("index"));
         const feedJson = feedsJson[index];
@@ -28,7 +38,8 @@ window.addEventListener('load', () => {
     updatePopUp(true, false);
     import('./modules/articles.js').then((articles) => {        
         articles.getJson((feedsJson, feednames, errors) => {
-            document.querySelector("#error").innerText = errors.filter(e => e).map(e => `${e.feedname}: ${e.error} (${e.status})`);
+            const message = errors.filter(e => e).map(e => `${e.feedname}: ${e.error} (${e.status})`).join(" | ");
+            updateMessenger(message);
             _feedsJson = getFriendlyFeeds(feedsJson);
             _feednames = feednames;
             import('./modules/ArticleUI.js').then((ArticleUI) => {

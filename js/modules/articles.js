@@ -7,15 +7,14 @@ function getResponse(url, loadEvent) {
 }
 
 function createFeedArray(feedname, url, withCors, onlineConverter, getChildrenStructure, itemToArticleJson, callback) {
-    function getDomain(url){
-        console.log(url)
+    function getDomain(url) {
         let _url = url
         const doubleDashIndex = url.indexOf("//")
-        if(doubleDashIndex >= 0){
-            _url = url.substring(doubleDashIndex+2);
+        if (doubleDashIndex >= 0) {
+            _url = url.substring(doubleDashIndex + 2);
         }
         const simpleDashIndex = _url.indexOf("/")
-        if(simpleDashIndex >= 0){
+        if (simpleDashIndex >= 0) {
             _url = _url.substring(0, simpleDashIndex);
         }
         return _url;
@@ -23,15 +22,18 @@ function createFeedArray(feedname, url, withCors, onlineConverter, getChildrenSt
     function toJson(response) {
         const r = getChildrenStructure(JSON.parse(response)).map(a => {
             const article = itemToArticleJson(a);
-            return {...article, icon: `http://s2.googleusercontent.com/s2/favicons?domain=${getDomain(article.icon || article.url)}`, }
+            return { ...article, icon: `http://s2.googleusercontent.com/s2/favicons?domain=${getDomain(article.icon || article.url)}`, }
         })
         return r;
+    }
+    function createErrorMessage(feedname, status, error){
+        return { feedname, status, error: error || "unknowned" }
     }
     const _url = onlineConverter ? `https://api.rss2json.com/v1/api.json?rss_url=${url}` : url;
     getResponse(withCors ? `https://cors-anywhere.herokuapp.com/${_url}` : _url, event => {
         const success = event && event.target.status === 200;
         const jsonObj = success ? toJson(event.target.response) : [];
-        callback(feedname, jsonObj, !success && { feedname, status: event.target.status, error: event.target.statusText || "unknowned" });
+        callback(feedname, jsonObj, !success && createErrorMessage(feedname, event.target.status, event.target.statusText));
     });
 }
 
@@ -52,7 +54,7 @@ function createRedditFeedArray(callback) {
             category: a.data.subreddit || (a.data.is_video && "video") || "uncategorized",
             date: new Date(parseInt(a.data.created_utc) * 1000),
             text: a.data.link_flair_text,
-            icon: a.data.url.indexOf("redd.it")>=0 ? "reddit.com" : a.data.url
+            icon: a.data.url.indexOf("redd.it") >= 0 ? "reddit.com" : a.data.url
         }
     }, callback);
 }
@@ -110,6 +112,16 @@ function getJson(callback) {
     // import("./articles_test.js").then(module => {
     //     const feeds = module.default();
     //     callback(feeds, ["source1", "source2", "source3"], []);
+    // })
+
+    // callback([], ["test"], [{feedname: "Reddit",
+    // status: 0,
+    // error: "unknowned"}]);
+
+    // createRedditFeedArray((f1, e1, error1) => {
+    //     const feeds = e1;
+    //     feeds.sort((a, b) => (a.date < b.date) ? 1 : -1);
+    //     callback(feeds, [f1], [error1]);
     // })
 
     createLaravelNewsFeedArray((f1, e1, error1) => {

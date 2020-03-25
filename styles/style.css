@@ -80,7 +80,6 @@ header h1 {
   color: #FFF;
   padding: 10px 2%;
   margin: 0;
-  width: 16%;
   float: left;
   padding-left: 0;
 }
@@ -88,7 +87,6 @@ header h1 {
 /* Header navigation bar */
 header nav {
   padding: 10px 2%;
-  width: 76%;
   float: right;
   text-align: right;
   line-height: 30px;
@@ -124,7 +122,6 @@ header #search img {
 header #search input {
   position: absolute;
   right: 20px;
-  /*top: 10px;*/
   padding: 8px 0;
   width: 0;
   transition: 0.2s all;
@@ -190,9 +187,40 @@ nav ul ul li {
 	position: relative;
 }
 
+
+.messenger {
+  display: flex;
+  flex-direction: row;
+  background-color: var(--secondary);
+  color: #fff;
+  margin-top: 63px;
+}
+#messenger-banner {
+  padding: 15px 0;
+  text-align: center;
+  width: 100%;
+}
+#messenger-xsquare{
+  padding: 15px;
+}
+#messenger-x {
+  padding: 5px;
+  border-radius: 7%;
+}
+#messenger-x:hover {
+  background-color: rgb(235, 107, 107);
+  cursor: pointer;
+}
+.close{
+  display: none;
+}
+
 /* Main Section */
-#main {
-  margin-top: 65px;
+.main {
+  margin-top: 15px;
+}
+.headerless{
+  margin-top: 70px;
 }
 
 /* Individual Article Styling */
