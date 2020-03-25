@@ -26,7 +26,7 @@ function createFeedArray(feedname, url, withCors, onlineConverter, getChildrenSt
         })
         return r;
     }
-    function createErrorMessage(feedname, status, error){
+    function createErrorMessage(feedname, status, error) {
         return { feedname, status, error: error || "unknowned" }
     }
     const _url = onlineConverter ? `https://api.rss2json.com/v1/api.json?rss_url=${url}` : url;
@@ -108,32 +108,52 @@ function createGeneralFeedArray(callback) {
         }, callback);
 }
 
+function createTestFeedArray(callback) {
+    import("./articles_test.js").then(module => {
+        const feeds = module.default();
+        callback("test", feeds, null);
+    })
+}
+
 function getJson(callback) {
-    // import("./articles_test.js").then(module => {
-    //     const feeds = module.default();
-    //     callback(feeds, ["source1", "source2", "source3"], []);
-    // })
+    const feedPromises = [];
 
-    // callback([], ["test"], [{feedname: "Reddit",
-    // status: 0,
-    // error: "unknowned"}]);
+    //Array of functions to get feeds from news sources
+    const functionArray = [
+        createLaravelNewsFeedArray, createRedditFeedArray, createNasaFeedArray, createGeneralFeedArray,
+        //createTestFeedArray
+    ];
 
-    // createRedditFeedArray((f1, e1, error1) => {
-    //     const feeds = e1;
-    //     feeds.sort((a, b) => (a.date < b.date) ? 1 : -1);
-    //     callback(feeds, [f1], [error1]);
-    // })
-
-    createLaravelNewsFeedArray((f1, e1, error1) => {
-        createRedditFeedArray((f2, e2, error2) => {
-            createNasaFeedArray((f3, e3, error3) => {
-                createGeneralFeedArray((f4, e4, error4) => {
-                    const feeds = e1.concat(e2, e3, e4);
-                    feeds.sort((a, b) => (a.date < b.date) ? 1 : -1);
-                    callback(feeds, [f1, f2, f3, f4], [error1, error2, error3, error4]);
-                })
+    //Configure all functions as promises
+    functionArray.forEach(promiseFnc => {
+        feedPromises.push(new Promise((resolve, reject) => {
+            promiseFnc((feedname, feeds, error) => {
+                resolve({ feedname, feeds, error });
             })
+        }));
+    })
+
+    //Execute all promises
+    Promise.all(feedPromises).then(allPromises => {
+        //Add new group of feeds to an accumulate array
+        function addNew(accumulate, newFeeds) {
+            const acc = accumulate || { feeds: [], feednames: [], errors: [] };
+            acc.feeds = acc.feeds.concat(newFeeds.feeds);
+            acc.feednames.push(newFeeds.feedname);
+            acc.errors.push(newFeeds.error);
+            return acc;
+        }
+
+        let all = null;
+        allPromises.forEach(p => {
+            all = addNew(all, p);
         })
+
+        //Sort the final feeds array by date
+        all.feeds.sort((a, b) => (a.date < b.date) ? 1 : -1);
+
+        //Return json object to origin
+        callback(all.feeds, all.feednames, all.errors);
     })
 }
 
