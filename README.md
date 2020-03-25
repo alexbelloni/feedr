@@ -58,17 +58,17 @@ Project description: build a simple, single-page application that consumes data 
 
 ## Technical hurdles and new knowledge
 ### Hurdles
-It's hard finding news feeds in Json format  
+It's hard finding news feeds in Json format     
 Some news sources blocked me because of CORS issue 
 ### New things 
-Review how to use JavaScript modules
-Added a rss-to-json online converter to receive some feeds
-
+Review how to use JavaScript modules and promises  
+Because of the hurdles above, added rss-to-json online converter and heroku CORS service to receive some feeds
 
 ## References
 
 NewsAPI: http://newsapi.org  
 Feeds: nasa.gov laravel-news.com reddit.com  
 Netlify: https://netlify.com  
+MDN web docs: https://developer.mozilla.org/  
 Alex's website: https://alexandrebelloni.com  
 
